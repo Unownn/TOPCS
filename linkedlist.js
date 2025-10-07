@@ -162,7 +162,7 @@ const fromArray = (values, mode = 'append') => {
 };
 
 // Test array
-const lis = ["cat", "dog", "mouse", "house", "poop", "pee", "poopoo"];
+const lis = ["cat", "dog", "mouse", "house", "hotel", "air", "lmao"];
 
 // Testing the functionality of the list with multiple values
 (() => {
