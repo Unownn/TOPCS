@@ -1,13 +1,13 @@
 #!/usr/bin/node
 
-class Node {
+export class Node {
     constructor(value){
         this.value = value;
         this.nextNode = null;
     }
 }
 
-class LinkedList {
+export class LinkedList {
     constructor(){
         this.head = null;
         this.tail = null;
@@ -130,6 +130,96 @@ class LinkedList {
         result += 'null';
         return result;
     }
+
+    // Delete a given index (0-based). Returns the removed value, or undefined if OOB.
+    deleteAt(index) {
+        if (index < 0 || this.len === 0 || index >= this.len) return undefined;
+
+        // remove head
+        if (index === 0) {
+            const val = this.head.value;
+            this.head = this.head.nextNode;
+            if (!this.head) this.tail = null; 
+            this.len--;
+            return val;
+        }
+
+        // walk to node just before target
+        let prev = this.head;
+        let i = 1;
+        while (i < index) {
+            prev = prev.nextNode;
+            i++;
+        }
+
+        const target = prev.nextNode;               
+        const val = target.value;
+        prev.nextNode = target.nextNode;
+
+        if (target === this.tail) this.tail = prev; 
+        this.len--;
+        return val;
+    }
+
+    // Delete the first node with matching value. Returns the removed value, or undefined if not found.
+    deleteValue(value) {
+        if (this.len === 0) return undefined;
+
+        // head match
+        if (this.head.value === value) {
+            const val = this.head.value;
+            this.head = this.head.nextNode;
+            if (!this.head) this.tail = null; 
+            this.len--;
+            return val;
+        }
+
+        // find first match after head
+        let prev = this.head;
+        let current = this.head.nextNode;
+        while (current) {
+            if (current.value === value) {
+            prev.nextNode = current.nextNode;
+            if (current === this.tail) this.tail = prev; 
+            this.len--;
+            return current.value;
+            }
+            prev = current;
+            current = current.nextNode;
+        }
+
+        return undefined; 
+    }
+
+    // Edit the value at a given index. Returns the old value, or undefined if OOB.
+    editAt(index, newValue) {
+        if (index < 0 || index >= this.len) return undefined;
+
+        let current = this.head;
+        let i = 0;
+        while (i < index) {
+            current = current.nextNode;
+            i++;
+        }
+
+        const old = current.value;
+        current.value = newValue;
+        return old;
+    }
+
+    // Edit the first node matching `value`. Returns the old value (same as `value`) or undefined if not found.
+    editValue(value, newValue) {
+        let current = this.head;
+        while (current) {
+            if (current.value === value) {
+            const old = current.value;
+            current.value = newValue;
+            return old;
+            }
+            current = current.nextNode;
+        }
+        return undefined;
+    }
 }
 
 // Assert test cases
@@ -161,6 +251,7 @@ const fromArray = (values, mode = 'append') => {
   return ll;
 };
 
+/*
 // Test array
 const lis = ["cat", "dog", "mouse", "house", "hotel", "air", "lmao"];
 
@@ -212,4 +303,4 @@ const lis = ["cat", "dog", "mouse", "house", "hotel", "air", "lmao"];
   }
 })();
 
-// Could write more testcases for different behaviours -> empty list, one element, duplicates, ..
+// Could write more testcases for different behaviours -> empty list, one element, duplicates, ..*/
