@@ -244,7 +244,9 @@ export class Tree {
   }
 
   // Rebalance the tree
-  rebalance(){
+  rebalance(){  
+    if (!this.root) return;
+    if (this.isBalanced && this.isBalanced()) return; 
     let inOrderArr = [];
     this.inOrderForEach(node => inOrderArr.push(node.value));
     this.buildTree(inOrderArr);
